@@ -82,10 +82,6 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
     /*停止播放*/
     synchronized public void stop() {
         releaseMediaPlayer();
-
-        if (mListener != null){
-            mListener.onPlayerStop();
-        }
     }
 
     /*启动定时器*/
@@ -164,6 +160,10 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
+
+            if (mListener != null){
+                mListener.onPlayerStop();
+            }
         }
 
         stopTimer();
@@ -171,7 +171,7 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
         seekTo = 0;
 
     }
-
+    
     /*获取当前播放状态*/
     public boolean isPlaying(){
         try {
