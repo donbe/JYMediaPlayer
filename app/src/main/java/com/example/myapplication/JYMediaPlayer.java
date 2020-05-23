@@ -172,6 +172,18 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
 
     }
 
+    /*获取当前播放状态*/
+    public boolean isPlaying(){
+        try {
+            if (mediaPlayer == null)
+                return false;
+
+            return mediaPlayer.isPlaying();
+        }catch (IllegalStateException e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {

@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button startSeek = findViewById(R.id.startSeek);
         startSeek.setOnClickListener(this);
 
+        Button isplaying= findViewById(R.id.isplaying);
+        isplaying.setOnClickListener(this);
+
     }
 
     @Override
@@ -96,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startSeek();
             }
             break;
+            case R.id.isplaying:{
+                isplaying();
+            }
+            break;
         }
     }
 
@@ -109,6 +116,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    /*播放状态*/
+    private void isplaying(){
+
+        if (player.isPlaying()){
+            alert("播放中");
+        }else{
+            alert("未播放");
+        }
+
+    }
+
 
     private JYMediaPlayer player;
 
@@ -119,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Uri uri = Uri.parse("android.resource://com.example.myapplication/raw/mangzhong");
         boolean ret = player.play(this,uri,10000);
         if (!ret){
-            alter("播放失败");
+            alert("播放失败");
         }
     }
 
@@ -130,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Uri uri = Uri.parse("android.resource://com.example.myapplication/raw/mangzhong");
         boolean ret = player.play(this,uri,30000,40000);
         if (!ret){
-            alter("播放失败");
+            alert("播放失败");
         }
     }
 
@@ -141,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             player.stop();
     }
 
-    private void alter(String text){
+    private void alert(String text){
         new AlertDialog.Builder(this)
                 .setMessage(text)
                 .setPositiveButton(android.R.string.yes, null)
