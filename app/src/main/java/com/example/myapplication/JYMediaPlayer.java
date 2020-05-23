@@ -25,6 +25,14 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
     // 播放到多少毫秒
     private int stopTo;
 
+    // 当前播放时间点
+    private int currentPos;
+
+    // 当前正在播放的context
+    private Context context;
+
+    // 当前正在播放的音乐文件路径
+    private Uri uri;
 
 
     public JYMediaPlayer() {
@@ -66,6 +74,8 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
 
         seekTo = seekms;
         stopTo = stopms;
+        this.context = context;
+        this.uri = uri;
 
         try {
             mediaPlayer.setDataSource(context, uri);
@@ -84,11 +94,19 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
         releaseMediaPlayer();
     }
 
+    /*继续播放*/
+    synchronized public void resume() {
+        if (context != null && uri != null) {
+            this.play(context, uri, currentPos, stopTo);
+        }
+    }
+
     /*启动定时器*/
     private void startTimer(){
 
         if (timer != null)return;
 
+        JYMediaPlayer self = this;
         timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -106,18 +124,20 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
                     return;
                 }
 
+                currentPos = mediaPlayer.getCurrentPosition();
+
                 if (mListener != null){
-                    mListener.onPlayerPlaying(mediaPlayer.getCurrentPosition());
+                    mListener.onPlayerPlaying(currentPos);
                 }
 
-                if (stopTo >0 && mediaPlayer.getCurrentPosition() > stopTo){
+                if (stopTo >0 && currentPos > stopTo){
                     stopTo = 0;
                     stop();
                 }
             }
 
             // 人耳大约能分辨100毫秒左右的是延迟，所以设置50毫秒的间隔时间
-        }, 0, 50);
+        }, 0, 10);
     }
 
     /*
@@ -171,7 +191,7 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
         seekTo = 0;
 
     }
-    
+
     /*获取当前播放状态*/
     public boolean isPlaying(){
         try {

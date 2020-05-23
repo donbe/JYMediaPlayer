@@ -70,8 +70,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button startSeek = findViewById(R.id.startSeek);
         startSeek.setOnClickListener(this);
 
+        // 播放状态
         Button isplaying= findViewById(R.id.isplaying);
         isplaying.setOnClickListener(this);
+
+        // 继续播放
+        Button resume= findViewById(R.id.resume);
+        resume.setOnClickListener(this);
 
     }
 
@@ -103,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 isplaying();
             }
             break;
+            case R.id.resume:{
+                resume();
+            }
+            break;
         }
     }
 
@@ -114,6 +123,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*停止录音*/
     private void stopRecord(){
 
+    }
+
+    /*继续播放录音*/
+    private void resume(){
+
+        player.resume();
     }
 
     /*播放状态*/
