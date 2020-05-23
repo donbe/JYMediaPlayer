@@ -202,6 +202,9 @@ public class JYMediaPlayer implements MediaPlayer.OnErrorListener, MediaPlayer.O
             seekTo = 0;
         }else{
             mediaPlayer.start();
+            if (mListener != null){
+                mListener.onPlayerStart();
+            }
         }
     }
 
